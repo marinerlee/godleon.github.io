@@ -9,6 +9,9 @@ categories: [linux]
 tags: [Linux, RHCE, RH134]
 ---
 
+老師補充
+========
+
 ```bash
 # 取得使用者資訊(跟 /etc/passwd 沒有絕對關係)
 [vagrant@server tmp]$ getent passwd user1
@@ -35,6 +38,8 @@ NIS & LDAP 單獨可做到：
 > 但 Kerberos 僅能提供帳號密碼驗證，無法提供使用者資訊，因此一般會與 LDAP 搭配來解決提供使用者資訊的問題，Windows AD 目前就是依照這種方式達成，安全性提高，且提供了 SSO 的能力)
 
 > 目前使用 LDAP + Kerberos 架構的產品有 Windows AD, SAMBA 4.x, RedHat IDM(IPA)
+
+-------------------------------------------------------------------------
 
 8.1 Using Identity Management Services
 ======================================
