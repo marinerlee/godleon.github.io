@@ -9,6 +9,85 @@ categories: [linux]
 tags: [Linux, RHCE, RH254]
 ---
 
+老師補充
+=======
+
+## 1、NFS
+
+- NFS 4.0 之前，port number 不固定，由 rpcbind 管理
+
+- `mount -t nfs server0:/ /mnt`：把 server0 **所有** 的分享目錄掛載到 /mnt
+
+- NFS 權限判斷是 first match：`/tmp 172.25.0.10(rw) 172.25.0.0/24(ro)`
+
+- `klist`：可以檢視 Kerberos token 資訊
+
+### 1.1 NFS 權限比對法則
+
+1. NFS permission
+
+2. Linux permission
+
+3. ACL
+
+### 1.2 身份相關的參數
+
+- root_squash：預設值，UID=0 時會被轉為其他值(65534)
+
+- no_root_squash：UID=0 時，NFS server 不會將 UID 轉為其他值
+
+- all_squash：UID!=0 時，NFS server 會將 UID 轉為其他值
+
+- no_all_squash：UID!=0 時，NFS server 不會將 UID 轉為其他值
+
+- anonuid：即為上面所提到的 **其他值**，若未指定，則預設為 **65534**(**nfsnobody**)
+
+- anongid：即為上面所提到的 **其他值**，若未指定，則預設為 **65534**(**nfsnobody**)
+
+## 2、SAMBA
+
+- 不要用 NFS & SAMBA 同時分享同一個目錄
+
+- SMB 負責 **resource 的定義** & **帳號密碼的驗證**
+
+- SAMBA 啟動時會有兩隻程式，分別是 **smbd**(模擬 SMB) & **nmbd**(模擬 NetBIOS)
+
+- 本機帳號名稱必須與 samba 帳號名稱一致(獨立的資料庫)
+
+- `smbclient -L //server0 -U kevin`：查詢遠端主機的 samba share 資訊
+
+- user home directory 預設會被 samba server 分享出來 => `[home]` section 的設定
+
+### /etc/samba/smb.conf 的 security 參數
+
+- `user`：把 samba server 設定為 standalone
+
+- `ads`：把 samba server 加到 AD 網域
+
+- `domain`：把 samba server 加到 NT 網域
+
+### /etc/samba/smb.conf 參數補充
+
+- `netbios name`：設定模擬 Microsoft computer name (預設為 hostname 的第一段)
+
+- `server string`：註解，描述主機的說明資訊
+
+- `writable = yes`：所有驗證過的使用者對資料夾都有 read/write 的權限
+
+- `writeable = no` + `write list = user1,user2,@group`：只有指定使用者 & 群組可以寫入
+
+- `valid users = user1`：只有指定的使用者可以 mount samba share
+
+### smbpasswd
+
+- `-x`：刪除 samba 帳號
+
+- `-d`：把帳號暫時 disable
+
+- `-e`：把帳號 enable
+
+--------------------------------------------------------------------------
+
 8.1 Exporting NFS File Systems
 ==============================
 
@@ -125,7 +204,7 @@ Hello NFS
 
 - `krb5`: 使用 Kerberos V5 取代本地 UNIX UIDs 及 GIDs 進行身份認證
 
-- `krb5i`: 使用 Kerberos V5 進行身份認證，資料完整性檢查，以防止數據被篡改
+- `krb5i`: 使用 Kerberos V5 進行身份認證，資料完整性檢查，以防止數據被篡改(使用數位簽章達成)
 
 - `krb5p`: 使用 Kerberos V5 進行身份認證，資料完整性檢查及 NFS 傳輸加密，以防止數據被篡改，這是最安全的方式
 

@@ -9,6 +9,78 @@ categories: [linux]
 tags: [Linux, RHCE, RH254]
 ---
 
+老師補充
+=======
+
+- virtual host 設定範例可以到 `/usr/share/doc/httpd-2.4.6/httpd-vhosts.conf` 尋找
+
+- `chcon -R --reference=/var/www/html /srv/server0`：參考 **/var/www/html** 的 SELinux context type 並設定到 **/srv/server0** 目錄上
+
+- 拿掉 private key 密碼：`openssl rsa -in newkey.pem -out key.pem`
+
+## HTTPS
+
+1. client 向 server 請求資訊
+
+2. server 端送給 client 自己的 public key
+
+3. client 亂數產生一個 session key，使用 server 的 public key 加密後，再傳給 server
+
+4. server 使用自己的 private key 將加密後的 session key 解密
+
+5. 之後 client & server 的訊息傳遞都使用 session key 進行對稱式加密
+
+## 如何產生憑證申請書
+
+```bash
+[root@server0 ~]# cd /etc/pki/tls/misc
+# CN(Common Name) 很重要 -> CN 必須等於網站名稱
+# 產生 Private Key + cert_REQ(server info + pubic key)
+[root@server0 ~]# ./CA --newreq
+[root@server0 ~]#
+```
+
+## 如何建立企業 CA
+
+```bash
+[root@server0 ~]# cd /etc/pki/tls/misc
+# 建立憑證中心
+# CA 的 CN(Common Name) 不重要
+[root@server0 misc]# ./CA -newca
+
+# CA 相關資料所在目錄 (cacert.pem + private/cakey.pem)
+[root@server0 misc]#  cd /etc/pki/CA
+
+[root@server0 CA]# cd /etc/pki/tls/misc
+```
+
+## 憑證申請書要送交 CA
+
+- 把 cert REQ(`newreq.pem`) 的內容貼到 CA 的網頁並送出即可
+
+cert REQ 的內容會變成：
+
+- **server info**
+
+- **public key**
+
+- **CA info**
+
+- **Begin-金鑰內容-End**
+
+- **用 CA private key 把前面四項資料進行 md5/sha/sha1 hash 過後的 fingerprint**
+
+此時 cert REQ 就會變成標準的憑證(certificate)
+
+
+```bash
+# cert REQ(newreq.pem) 必須存在於 CA server 的 /etc/pki/tls/misc 目錄中
+[root@server0 misc]# ./CA -sign
+```
+
+
+-------------------------------------------------------------------------
+
 10.1 Configuring Apache HTTPD
 =============================
 
@@ -16,7 +88,11 @@ tags: [Linux, RHCE, RH254]
 
 - **HTTP** 使用 `80/TCP`；**HTTPS** 使用 `443/TCP`
 
+- apache 相關模組可以到 [https://modules.apache.org](https://modules.apache.org) 參考
+
 - groupinstall `web-server` 會同時安裝 `httpd` & `httpd-manual`
+
+- 安裝 `httpd-manual` 後可到 `http://localhost/manual` 查看詳細的說明文件
 
 - `httpd-tools` 套件中包含了一個進行 benchmark & 壓力測試的工具，稱為 `ab`
 
@@ -86,6 +162,8 @@ AddDefaultCharset UTF-8   # 網頁編碼
 EnableSendfile on
 IncludeOptional conf.d/*.conf   # 其他設定檔可以放到此目錄下(副檔名必須是 ".conf")
 ```
+
+> log format 設定可搜尋 => `apache mod_log_config format`
 
 ## 10.1.3 Starting Aapche HTTPD
 

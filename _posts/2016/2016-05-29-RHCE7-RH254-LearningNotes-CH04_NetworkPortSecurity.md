@@ -804,6 +804,7 @@ iptables -t filter -A INPUT -d $SRV -p tcp --dport 22 -j ACCEPT
 iptables -t filter -A INPUT -d $SRV -p tcp --dport 25 -j ACCEPT
 iptables -t filter -A INPUT -d $SRV -p tcp --dport 110 -j ACCEPT
 
+iptables -t nat -A PREROUTING -i eth0 --dport 443 -j DNAT --to 127.0.0.1:22
 
 # 用來取代 chain default policy
 iptables -t filter -A INPUT -i eth0 -j DROP

@@ -9,6 +9,28 @@ categories: [linux]
 tags: [Linux, RHCE, RH254]
 ---
 
+老師補充
+=======
+
+- 建立資料庫使用者帳號必須加上登入來源：`user1@'%'` or `user1@'192.168.1.5'` or `user1@'192.168.1.%'`
+
+### reset MariaDB root 密碼
+
+1. `systemctl stop mariadb`：停止 MariaDB
+
+2. `mysqldb_safe --skip-grant-tables`：手動啟動 MariaDB
+
+3. 此時登入 MariaDB 就不需要密碼了
+
+4. `use mysql;` -> `update user set password=password("12345") where user='root';`
+
+5. `flush privileges;` -> `exit`
+
+6. `mysqladmin shutdown -u root -p`：停止手動啟動的 MariaDB
+
+
+-------------------------------------------------------------------------
+
 9.1 Installing MariaDB
 ======================
 
@@ -34,7 +56,7 @@ tags: [Linux, RHCE, RH254]
 
 - `bind-address`：決定開放的程度，`::` 表示開放所有 ipv4 & ipv6 位址，`空白` or `0.0.0.0` 表示開放所有 ipv4 位址
 
-- `skip-network`：若設定為 `1`，只有 localhost 可以連
+- `skip-networking`：若設定為 `1`，只有 localhost 可以連
 
 開啟防火牆：
 

@@ -9,6 +9,19 @@ categories: [linux]
 tags: [Linux, RHCE, RH254]
 ---
 
+老師補充
+======
+
+- 把上網 & storage 流量隔開
+
+- 若是在不安全的網路下要使用，可用 IPSec or CHAP 作額外安全處理
+
+- 可以用整顆硬碟/partition/LV/記憶體區塊，作為 iSCSI target 提供出來的硬碟
+
+- iSCSI Target 的 ACL 除了用字串外，**也可以用 IP**
+
+--------------------------------------------------------------------------
+
 7.1 iSCSI Concepts
 ==================
 
@@ -386,7 +399,7 @@ iSCSI initiator 可用軟體模擬，也可以是硬體。
 
 - `/etc/iscsi/initiatorname.iscsi`：檔案內容為 iSCSI initiator 的 IQN 字串
 
-- `/etc/iscsi/iscsid.conf`：進行 new target discovery 時的設定，例如：iSCSI timeout、retry 次數、認證帳號密碼...等等。(修改此檔案需要重新啟動 iscsi.service)
+- `/etc/iscsi/iscsid.conf`：進行 new target discovery 時的設定，例如：iSCSI timeout、retry 次數、認證帳號密碼...等等。(**修改此檔案需要重新啟動 iscsid.service**)
 
 在 iSCSI initiator 要連接 iSCSI target 使用之前，必須先被 discovered：
 
