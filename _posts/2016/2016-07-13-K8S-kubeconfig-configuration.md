@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "[Kubernetes] kukeconfig 介紹 & 設定"
-description: "This article introduces how to configure kubeconfig file to access "
+title:  "[Kubernetes] kubeconfig 介紹 & 設定"
+description: "This article introduces how to configure kubeconfig file to access Kubernetes"
 date: 2016-07-13 10:15:00
 published: true
 comments: true
