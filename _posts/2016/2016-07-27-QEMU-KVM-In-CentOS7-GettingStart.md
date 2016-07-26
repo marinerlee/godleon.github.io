@@ -9,7 +9,7 @@ categories: [kvm]
 tags: [Linux, KVM]
 ---
 
-# 介紹如何使用 QEMU/KVM 在 Linux 上啟用第一個 virtual machine
+介紹如何使用 QEMU/KVM 在 Linux 上啟用第一個 virtual machine
 
 前言
 ====
