@@ -9,6 +9,7 @@ categories: [linux]
 tags: [Linux]
 ---
 
+> use ssh agent and keychain to input the secret of password-protected ssh key
 
 最近被 GitHub 騙了去產生個帶有密碼的 SSH keypair 來用
 
