@@ -45,6 +45,8 @@ CPU：Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
 前置環境設定
 ===========
 
+## 安裝套件
+
 首先要安裝 KVM、QEMU、libvirtd 相關套件 & 啟動 libvirtd service：
 
 ```bash
@@ -58,6 +60,34 @@ CPU：Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
                       python-virtinst \
                       libvirt-client \
                       bridge-utils
+```
+
+## 防火牆設定
+
+停用預設的 **firewalld.service**，改用傳統的 itpables 來進行防火牆設定，並使用以下 script 建立防火牆：
+
+```bash
+#!/bin/bash
+
+# global variables
+IIF="ens1f0"
+
+# 防止 sync flooding 攻擊(開啟 tcp sync cookie)
+echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+
+iptables -t filter -F
+
+# 設定 connection track
+iptables -t filter -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+# 避免 INVALID 封包被其他服務所接收
+iptables -t filter -A INPUT -m state --state INVALID -j DROP
+
+iptables -t filter -A INPUT -p tcp --dport 22 -j ACCEPT
+# 提供 vnc access
+iptables -t filter -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
+
+# 用來取代 chain default policy
+iptables -t filter -A INPUT -i ${IIF} -j DROP
 ```
 
 ---------------------------------------------------------------------
@@ -86,7 +116,10 @@ ubuntu-16.04.1-server-amd64.iso
 # -boot order=cd => 開機順序為 cdrom > hdd
 # -hda /kvm/storage/vm_disks/ubnutu1604.img => 指定 hdd raw image
 # -cdrom /kvm/os_images/ubuntu-16.04.1-server-amd64.iso => 指定開機光碟 iso
-[root@us-s2s-kvm-host ~]# kvm -smp 4 -m 2048 -vnc 0.0.0.0:5 -boot order=cd -hda /kvm/storage/vm_disks/ubnutu1604.img -cdrom /kvm/os_images/ubuntu-16.04.1-server-amd64.iso
+[root@us-s2s-kvm-host ~]# kvm -smp 4 -m 2048 \
+  -vnc 0.0.0.0:5 -boot order=cd \
+  -hda /kvm/storage/vm_disks/ubnutu1604.img \
+  -cdrom /kvm/os_images/ubuntu-16.04.1-server-amd64.iso
 ```
 
 接著可以使用 [TigerVNC](http://tigervnc.org/) or [VNC® Viewer for Google Chrome](https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla) 來進行連線，使用的的連線位置為 `server_ip:5`；連線進入後，就可以按照一般程序進行 OS 的安裝。
