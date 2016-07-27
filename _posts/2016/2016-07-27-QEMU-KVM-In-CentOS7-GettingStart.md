@@ -48,7 +48,16 @@ CPU：Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
 首先要安裝 KVM、QEMU、libvirtd 相關套件 & 啟動 libvirtd service：
 
 ```bash
-[root@localhost ~]# yum install -y qemu-kvm qemu-img qemu-system-x86 libvirt virt-install libvirt-python virt-manager python-virtinst libvirt-client bridge-utils
+[root@localhost ~]# yum install -y qemu-kvm \
+                      qemu-img \
+                      qemu-system-x86 \
+                      libvirt \
+                      virt-install \
+                      libvirt-python \
+                      virt-manager \
+                      python-virtinst \
+                      libvirt-client \
+                      bridge-utils
 ```
 
 ---------------------------------------------------------------------
@@ -56,7 +65,7 @@ CPU：Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
 啟動第一個 virtual machine
 =========================
 
-由於 RedHat 建議使用 virsh，因此 <font color='red'>**qemu-kvm**</font> 就不存在於預設路徑中，用以下指令把它找出來：
+由於 RedHat 建議使用 virsh，因此 **<font color='red'>qemu-kvm</font>** 就不存在於預設路徑中，用以下指令把它找出來：
 
 ```bash
 # 將 qemu-kvm 以 symlink 的形式複製到 $PATH
