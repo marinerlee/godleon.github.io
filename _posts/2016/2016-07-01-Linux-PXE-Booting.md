@@ -33,7 +33,7 @@ Network Boot Program (NBP, 也稱為 bootloader)
 
 CoreOS 可用多種不同的 bootloader 開機 & 設定，如果是一個全新的設定環境，[iPXE](http://ipxe.org/) 是個不錯的選擇。
 
-### PXELINUX
+## PXELINUX
 
 [PXELINUX](http://www.syslinux.org/wiki/index.php?title=PXELINUX) 是個相當普遍被使用的 bootloader(檔名為 `pxelinux.0`)，會自動從 `/tftp_bootdir/pxelinux.cfg` 目錄中載入設定檔。
 
@@ -70,7 +70,7 @@ PXE 雖然普遍使用，但的確是有些缺點存在的，例如：
 2. 若有許多針對不同機器的客製化設定檔需求，會需要撰寫很多份 pxelinux config
 
 
-### iPXE
+## iPXE
 
 [iPXE](http://ipxe.org/) 可是視為加強版的 PXE bootloader，使用的並非是設定檔，而是 **iPXE script**，而且 iPXE script & image 都可以透過 HTTP 下載
 
@@ -99,8 +99,7 @@ boot
 
 > 透過 iPXE script，可以用程式化的方式進行更多動態的開機設定
 
-
-在 iPXE 開機環境 for CoreOS 的架構中，有一些是值得注意一下的：
+在 iPXE 開機環境 for CoreOS 的架構中，有一些事情是值得注意一下的：
 
 1. TFTP 只用來提供 [undionly.kpxe](http://boot.ipxe.org/undionly.kpxe) bootloader，目的是為了讓老舊的 PXE firmware client 也可以使用 iPXE
 
