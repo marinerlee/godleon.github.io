@@ -1,13 +1,15 @@
 ---
 layout: post
 title:  "[Linux] PXE Booting"
-description: "This article introduces the background of PXE Booting"
+description: "This article introduces the booting process of PXE and iPXE"
 date: 2016-07-01 14:30:00
 published: true
 comments: true
 categories: [linux]
 tags: [Linux]
 ---
+
+此篇文章介紹 PXE & iPXE 的開機流程
 
 PXE
 ===
@@ -76,7 +78,13 @@ PXE 雖然普遍使用，但的確是有些缺點存在的，例如：
 
 ![iPXE](https://github.com/coreos/coreos-baremetal/raw/master/Documentation/img/ipxe.png)
 
-從上圖可以看出，為了可以運作在原有的環境中，使用了一個名稱為 [undionly.kpxe](http://boot.ipxe.org/undionly.kpxe) 的 bootloader 來協助開機，並會使用檔名為 `boot.ipxe`(來源可以是 HTTP) 的 iPXE script 來繼續執行後續的開機流程。
+從上圖可以看出，為了可以運作在原有的環境中，使用了一個名稱為 [undionly.kpxe](http://boot.ipxe.org/undionly.kpxe) 的 bootloader 來協助開機，接著會發生以下的事情：
+
+1. bootloader undionly.kpxe 會提供給 machine 上網 & 處理後續 iPXE script 的能力
+
+2. 透過網路取得 iPXE script `boot.ipxes`
+
+3. 並會使用檔名為 `boot.ipxe`(來源可以是 HTTP) 的 iPXE script 來繼續執行後續的開機流程
 
 以下是個簡單的 iPXE script 範例：
 
@@ -88,6 +96,9 @@ kernel ${base-url}/coreos_production_pxe.vmlinuz cloud-config-url=http://provisi
 initrd ${base-url}/coreos_production_pxe_image.cpio.gz
 boot
 ```
+
+> 透過 iPXE script，可以用程式化的方式進行更多動態的開機設定
+
 
 在 iPXE 開機環境 for CoreOS 的架構中，有一些是值得注意一下的：
 
