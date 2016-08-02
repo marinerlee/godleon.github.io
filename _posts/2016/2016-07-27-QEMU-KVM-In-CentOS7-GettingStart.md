@@ -151,7 +151,7 @@ References
 
 - [玩具烏托邦: 五分鐘開始玩 qemu-kvm 虛擬機](http://newtoypia.blogspot.tw/2015/02/qemu-kvm.html)
 
-- [在 CentOS 6.2 上安装和配置 KVM | vpsee.com](http://www.vpsee.com/2012/04/install-kvm-on-centos-6-2/)
+- [在 CentOS 6.2 上安装和配置 KVM @vpsee.com](http://www.vpsee.com/2012/04/install-kvm-on-centos-6-2/)
 
 - [使用 libvirt 與 qemu-kvm 開啓 VM (內含 libvirt sample XML for KVM ) « OT Coding Note](http://ot-note.logdown.com/posts/64644/launch-a-vm-with-qemu-kvm)
 
