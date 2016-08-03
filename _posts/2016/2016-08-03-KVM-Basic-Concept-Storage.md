@@ -9,7 +9,7 @@ categories: [kvm]
 tags: [Linux, KVM]
 ---
 
-此篇文章介紹學習 Linux KVM 時所需要了解的 storage 相關知識
+此篇文章介紹學習 Linux KVM 時所需要了解的 Storage 相關知識
 
 前言
 ====
