@@ -50,16 +50,16 @@ CPU：Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
 首先要安裝 KVM、QEMU、libvirtd 相關套件 & 啟動 libvirtd service：
 
 ```bash
-[root@localhost ~]# yum install -y qemu-kvm \
-                      qemu-img \
-                      qemu-system-x86 \
-                      libvirt \
-                      virt-install \
-                      libvirt-python \
-                      virt-manager \
-                      python-virtinst \
-                      libvirt-client \
-                      bridge-utils
+$ yum install -y qemu-kvm \
+    qemu-img \
+    qemu-system-x86 \
+    libvirt \
+    virt-install \
+    libvirt-python \
+    virt-manager \
+    python-virtinst \
+    libvirt-client \
+    bridge-utils
 ```
 
 ## 防火牆設定
@@ -100,13 +100,13 @@ iptables -t filter -A INPUT -i ${IIF} -j DROP
 ```bash
 # 將 qemu-kvm 以 symlink 的形式複製到 $PATH
 # qemu-kvm 指令已經預設啟用 KVM 支援
-[root@us-s2s-kvm-host ~]# ln -sf /usr/libexec/qemu-kvm /usr/bin/kvm
+$ ln -sf /usr/libexec/qemu-kvm /usr/bin/kvm
 
 # 製作一個 size = 8GB 的 raw image 作為 virtual machine disk
-[root@us-s2s-kvm-host ~]# dd if=/dev/zero of=/kvm/storage/vm_disks/ubnutu1604.img bs=1M count=8192
+$ dd if=/dev/zero of=/kvm/storage/vm_disks/ubnutu1604.img bs=1M count=8192
 
 # 目前系統中存在的 iso
-[root@us-s2s-kvm-host os_images]# ls /kvm/os_images
+$ ls /kvm/os_images
 ubuntu-16.04.1-server-amd64.iso
 
 # 啟動 VM (以光碟開機，安裝作業系統)
@@ -116,7 +116,7 @@ ubuntu-16.04.1-server-amd64.iso
 # -boot order=cd => 開機順序為 cdrom > hdd
 # -hda /kvm/storage/vm_disks/ubnutu1604.img => 指定 hdd raw image
 # -cdrom /kvm/os_images/ubuntu-16.04.1-server-amd64.iso => 指定開機光碟 iso
-[root@us-s2s-kvm-host ~]# kvm -smp 4 -m 2048 \
+$ kvm -smp 4 -m 2048 \
   -vnc 0.0.0.0:5 -boot order=cd \
   -hda /kvm/storage/vm_disks/ubnutu1604.img \
   -cdrom /kvm/os_images/ubuntu-16.04.1-server-amd64.iso
@@ -130,7 +130,7 @@ ubuntu-16.04.1-server-amd64.iso
 # -smp 4 => vCPU=4
 # -m 2048 => RAM=2048MB
 # -vnc 0.0.0.0:5 => 將 vnc 開在第五個 console，因此透過 vnc viewer 連線要使用 "ip:5" 來進行連線
-[root@us-s2s-kvm-host ~]# kvm -smp 4 -m 2048 -vnc 0.0.0.0:5 -hda /kvm/storage/vm_disks/ubnutu1604.img
+$ kvm -smp 4 -m 2048 -vnc 0.0.0.0:5 -hda /kvm/storage/vm_disks/ubnutu1604.img
 ```
 
 
