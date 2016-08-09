@@ -488,7 +488,7 @@ RHEL7 中提供 `semanage` 指令可用來修改 SELinux port type，指令類�
 # 允許 gopher service 監聽 tcp port 71
 $ sudo semanage port -a -t gopher_port_t -p tcp 71
 
-# 修改 port lebel 為 http_port_t
+# 修改 port label 為 http_port_t
 $ sudo semanage port -m -t http_port_t -p tcp 71
 
 # 移除 port label
