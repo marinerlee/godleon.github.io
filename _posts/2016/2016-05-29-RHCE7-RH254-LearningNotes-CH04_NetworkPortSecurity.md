@@ -94,7 +94,7 @@ $ sudo firewall-cmd --set-default-zone=dmz
 
 $ sudo firewall-cmd --permanent --zone=internal --add-source=192.168.0.0/24
 
-$ sudo firewall-cmd --perminant --zone=internal --add-service=mysql
+$ sudo firewall-cmd --permanent --zone=internal --add-service=mysql
 
 $ sudo firewall-cmd --reload
 ```
